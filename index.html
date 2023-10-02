@@ -4,6 +4,10 @@
       rel="stylesheet"
       href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
     />
+    <link
+      rel="stylesheet"
+      href="https://use.fontawesome.com/releases/v5.14.0/css/all.css"
+    />
     <script src="js/main.js"></script>
   </head>
 
@@ -30,15 +34,42 @@
               </select>
             </div>
 
-            <button type="button" class="btn btn-primary">
+            <div class="form-group">
+              <label for="Cantidad">Cantidad:</label>
+              <input
+                type="number"
+                class="form-control"
+                min="1"
+                value="1"
+                id="Cantidad"
+              />
+            </div>
+
+            <button
+              type="button"
+              class="btn btn-primary"
+              style="margin-bottom: 1rem"
+              id="addButton"
+            >
               Agregar producto
+            </button>
+            <button
+              type="button"
+              style="margin-bottom: 1rem"
+              class="btn text-danger"
+              id="clearButton"
+            >
+              Limpiar
             </button>
 
             <table class="table">
               <thead>
                 <tr>
                   <th>Producto</th>
-                  <th>Precio</th>
+                  <th>Precio unitario</th>
+                  <th>Cantidad</th>
+                  <th>Precio total</th>
+                  <th></th>
                 </tr>
               </thead>
               <tbody id="tablaProductos"></tbody>
