@@ -1,5 +1,7 @@
 <html>
   <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="css/styles.css" rel="stylesheet" type="text/css">
     <link
       rel="stylesheet"
       href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
@@ -14,8 +16,8 @@
   <body>
     <div class="container mt-5">
       <div class="row justify-content-center">
-        <div class="col-md-6">
-          <h1>Comercio digital</h1>
+        <div class="col-md-6 col-sm-12">
+          <h1>Comercio digital</h1><br>
           <form>
             <div class="form-group">
               <label>Nombre del cliente:</label>
@@ -24,7 +26,7 @@
 
             <div class="form-group">
               <label>RUT del cliente (opcional):</label>
-              <input type="text" class="form-control" id="clienteRut" />
+              <input type="text" class="form-control" id="clienteRut" placeholder="Su número de RUT"/>
             </div>
 
             <div class="form-group">
@@ -60,7 +62,7 @@
               id="clearButton"
             >
               Limpiar
-            </button>
+            </button><br> <br> 
 
             <table class="table">
               <thead>
@@ -76,6 +78,11 @@
             </table>
 
             <h3>Precio total: <span id="precioTotal">$0</span></h3>
+            <h3>Cuotas: <input id="cuotas" value="1" type="number" min="1" max="6" style="width:50px"> </h3> <br>
+            <button id="comprarButton" class="btn btn-primary" style="background-color: rgb(190, 7, 7); border-color:rgb(138, 2, 2)">
+              <i class="fa fa-shopping-cart"></i> Comprar
+            </button>
+            
           </form>
         </div>
       </div>

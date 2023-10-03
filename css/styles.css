@@ -1,0 +1,28 @@
+@media (min-width: 992px) { /* para pantallas grandes */
+    h1 {
+      font-size: 2rem; 
+    }
+    
+    .form-group {
+      margin-top: 20px; 
+    }
+  }
+
+  @media (max-width: 991px) { /* para pantallas medianas */
+    .btn {
+      margin-bottom: 10px; 
+    }
+  }
+
+  @media (max-width: 767px) { /* para pantallas pequeñas */
+    table {
+      font-size: 0.8rem; 
+    }
+  }
+
+
+/* 
+    CREO QUE ESTO NO ESTA AFECTANDO A LA PÁGINA RESPONSIVE,
+
+    TAL VEZ FALTA MODIFICAR MAS ELEMENTOS O HICE ALGO MAL ->lucas
+*/
