@@ -121,6 +121,8 @@ document.addEventListener("DOMContentLoaded", async () => {
   const comprarButton = document.querySelector("#comprarButton");
   comprarButton.addEventListener("click", () => {
     // Calcular el precio total
+    const cuotas = document.getElementById("cuotas").value
+    if(cuotas >= 1 && cuotas <= 6){
     let totalCompra = 0;
     tableBody.querySelectorAll("tr").forEach((tr) => {
       let totalProducto = parseFloat(tr.cells[3].innerText.replace(/\$|,/g, ""));
@@ -153,6 +155,9 @@ document.addEventListener("DOMContentLoaded", async () => {
         <p></span><strong>${cuotas}</strong> cuotas de: <span style="color:blue">$${totalValue.toFixed(2)}</span> </p>
         </body>
       </html>
-    `);
+    `);} else {
+      let cuotasError = document.getElementById("cuotasError");
+      cuotasError.style.display = "block";
+    }
   });
 })

@@ -26,3 +26,9 @@
 
     TAL VEZ FALTA MODIFICAR MAS ELEMENTOS O HICE ALGO MAL ->lucas
 */
+
+#cuotasError {
+  display: none;
+  color:red;
+  font-weight: bold;
+}
