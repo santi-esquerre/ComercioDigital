@@ -38,51 +38,75 @@ document.addEventListener("DOMContentLoaded", async () => {
   const total = document.querySelector("#precioTotal"); // Total de la compra
 
   addButton.addEventListener("click", () => {
-    if (clientName.value.trim == "") {
+    if (clientName.value.trim() == "") {
       alert("Debe ingresar el nombre del cliente");
       return;
     }
-    if (selectProd.value.trim == "") {
+    if (selectProd.value.trim() === "Selecciona un producto...") {
       alert("Debe seleccionar un producto");
       return;
     }
-    let producto = productos.find(
-      (producto) => producto.id == selectProd.value
-    );
-    let cantidad = quantity.value;
-    tableBody.innerHTML += `
-      <tr>
-        <td>${producto.producto}</td>
-        <td>${Intl.NumberFormat("en-US").format(
-          producto.precio.toFixed(2)
-        )}</td>
-        <td>${cantidad}</td>
-        <td>${Intl.NumberFormat("en-US").format(
-          (producto.precio * cantidad).toFixed(2)
-        )}</td>
-        <td><button class="btn btn-danger"><i class="fa fa-solid fa-trash"></i></button></td>
-      </tr>
-    `;
-
-    let totalCompra = 0;
-
+    let producto = productos.find((producto) => producto.id == selectProd.value);
+    let cantidad = parseInt(quantity.value);
+    
+  
+    // Buscar si el producto ya está en la tabla
+    let existingRow = null;
     tableBody.querySelectorAll("tr").forEach((tr) => {
-      let totalProducto = tr.cells[3].innerText.replace(/,/g, "");
-      totalCompra += parseFloat(totalProducto);
-      tr.cells[4].addEventListener("click", () => {
-        tr.remove();
-        let totalProducto = tr.cells[3].innerText.replace(/,/g, "");
-        totalCompra -= parseFloat(totalProducto);
-        total.innerHTML = `$${Intl.NumberFormat("en-US").format(
-          totalCompra.toFixed(2)
-        )}`;
-      });
+      if (tr.cells[0].innerText === producto.producto) {
+        existingRow = tr;
+      }
     });
+  
+    if (existingRow) {
+      // Si el producto ya está en la tabla, actualiza la cantidad
+      let existingCantidad = parseInt(existingRow.cells[2].innerText);
+      existingRow.cells[2].innerText = existingCantidad + cantidad;
+  
+      let totalProducto = producto.precio * (existingCantidad + cantidad);
+      existingRow.cells[3].innerText = `$${Intl.NumberFormat("en-US").format(
+        totalProducto.toFixed(2)
+      )}`;
+    } else {
+      // Si el producto no está en la tabla, se agrega como una nueva fila
+      tableBody.innerHTML += `
+        <tr>
+          <td>${producto.producto}</td>
+          <td>${Intl.NumberFormat("en-US").format(producto.precio.toFixed(2))}</td>
+          <td>${cantidad}</td>
+          <td>${Intl.NumberFormat("en-US").format(
+            (producto.precio * cantidad).toFixed(2)
+          )}</td>
+          <td><button class="btn btn-danger"><i class="fa fa-solid fa-trash"></i></button></td>
+        </tr>
+      `;
 
-    total.innerHTML = `$${Intl.NumberFormat("en-US").format(
-      totalCompra.toFixed(2)
-    )}`;
-  });
+      const deleteButtons = document.querySelectorAll(".btn-danger");
+
+      deleteButtons.forEach((deleteButton) => {
+        deleteButton.addEventListener("click", () => {
+          const row = deleteButton.closest("tr");
+      
+          if (row) {
+            row.remove();
+            actualizarTotal();
+          }
+        });
+      });
+    }
+    actualizarTotal();
+  
+    // Actualizar el total
+    function actualizarTotal() {
+      let totalCompra = 0;
+      tableBody.querySelectorAll("tr").forEach((tr) => {
+        let totalProducto = parseFloat(tr.cells[3].innerText.replace(/\$|,/g, ""));
+        if (!isNaN(totalProducto)) {
+          totalCompra += totalProducto;
+        }
+      });
+      total.innerHTML = `$${Intl.NumberFormat("en-US").format(totalCompra.toFixed(2))}`;
+    }
 
   clearButton.addEventListener("click", () => {
     clientName.value = "";
@@ -91,5 +115,44 @@ document.addEventListener("DOMContentLoaded", async () => {
     selectProd.selectedIndex = 0;
     tableBody.innerHTML = "";
     total.innerHTML = "$0";
+    });
   });
-});
+
+  const comprarButton = document.querySelector("#comprarButton");
+  comprarButton.addEventListener("click", () => {
+    // Calcular el precio total
+    let totalCompra = 0;
+    tableBody.querySelectorAll("tr").forEach((tr) => {
+      let totalProducto = parseFloat(tr.cells[3].innerText.replace(/\$|,/g, ""));
+      if (!isNaN(totalProducto)) {
+        totalCompra += totalProducto;
+      }
+    });
+
+    // Abre una ventana emergente con el mensaje de compra realizada y el precio total
+    const ventanaEmergente = window.open("", "VentanaEmergente", "width=350,height=300");
+    const cuotas = document.getElementById("cuotas").value
+    const totalValue = totalCompra/cuotas
+    const nombreCliente = clientName.value
+    const RUTcliente = clientRUT.value
+
+    ventanaEmergente.document.write(`
+      <html>
+        <head>
+          <style>
+            body {
+              font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+            }
+          </style>
+        </head>
+        <body>
+        <h1>Compra realizada correctamente</h1>
+        <h3>Cliente: ${nombreCliente}</h3>
+        <h3>RUT: ${RUTcliente}</h3>
+        <p>Precio total:<span style="color:green">$${totalCompra.toFixed(2)}</p>
+        <p></span><strong>${cuotas}</strong> cuotas de: <span style="color:blue">$${totalValue.toFixed(2)}</span> </p>
+        </body>
+      </html>
+    `);
+  });
+})
